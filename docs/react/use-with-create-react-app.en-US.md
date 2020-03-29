@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 4
 title: Use in create-react-app
 ---
 
@@ -197,7 +197,9 @@ module.exports = override(
 );
 ```
 
-We use `modifyVars` option of [less-loader](https://github.com/webpack/less-loader#less-options) here, you can see a green button rendered on the page after rebooting the start server.
+We use `modifyVars` option of [less-loader](https://github.com/webpack/less-loader#less-options) here. If you see a green button rendered on the page after rebooting the server, then the configuration was successful.
+
+We have built-in dark theme and compact theme in antd, you can reference to [Use dark or compact theme](/docs/react/customize-theme#Use-dark-or-compact-theme).
 
 > You could also try [craco](https://github.com/sharegate/craco) and [craco-antd](https://github.com/FormAPI/craco-antd) to customize create-react-app webpack config same as customize-cra does.
 

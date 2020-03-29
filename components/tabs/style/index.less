@@ -61,7 +61,7 @@
 
   // https://github.com/ant-design/ant-design/issues/9104
   &-bottom &-bottom-bar {
-    margin-top: 16px;
+    margin-top: @margin-md;
     margin-bottom: 0;
     border-top: @border-width-base @border-style-base @border-color-split;
     border-bottom: none;
@@ -137,6 +137,7 @@
 
   &-tab-prev {
     left: 0;
+
     :root & {
       filter: none;
     }
@@ -207,12 +208,13 @@
       }
 
       .@{iconfont-css-prefix} {
-        margin-right: 8px;
+        margin-right: @margin-sm;
       }
 
       &-active {
         color: @tabs-highlight-color;
         font-weight: 500;
+        outline: none;
       }
 
       &-disabled {
@@ -376,7 +378,7 @@
     }
   }
   .@{tab-prefix-cls}-left-content {
-    padding-left: 24px;
+    padding-left: @padding-lg;
     border-left: @border-width-base @border-style-base @border-color-split;
   }
 
@@ -397,7 +399,7 @@
     }
   }
   .@{tab-prefix-cls}-right-content {
-    padding-right: 24px;
+    padding-right: @padding-lg;
     border-right: @border-width-base @border-style-base @border-color-split;
   }
 }
@@ -434,3 +436,5 @@
 .@{tab-prefix-cls}-right-content {
   .tabs-no-animation();
 }
+
+@import './rtl.less';
