@@ -7,7 +7,7 @@ import mountTest from '../../../tests/shared/mountTest';
 import rtlTest from '../../../tests/shared/rtlTest';
 
 describe('Input.Search', () => {
-  focusTest(Search);
+  focusTest(Search, { refFocus: true });
   mountTest(Search);
   rtlTest(Search);
 
@@ -36,14 +36,14 @@ describe('Input.Search', () => {
   it('should disable search icon when disabled prop is true', () => {
     const onSearch = jest.fn();
     const wrapper = mount(<Search defaultValue="search text" onSearch={onSearch} disabled />);
-    wrapper.find('.anticon-search').simulate('click');
+    wrapper.find('Button').simulate('click');
     expect(onSearch).toHaveBeenCalledTimes(0);
   });
 
   it('should trigger onSearch when click search icon', () => {
     const onSearch = jest.fn();
     const wrapper = mount(<Search defaultValue="search text" onSearch={onSearch} />);
-    wrapper.find('.anticon-search').simulate('click');
+    wrapper.find('Button').simulate('click');
     expect(onSearch).toHaveBeenCalledTimes(1);
     expect(onSearch).toHaveBeenCalledWith(
       'search text',
@@ -154,10 +154,7 @@ describe('Input.Search', () => {
     const wrapper = mount(
       <Search allowClear defaultValue="value" onSearch={onSearch} onChange={onChange} />,
     );
-    wrapper
-      .find('.ant-input-clear-icon')
-      .at(0)
-      .simulate('click');
+    wrapper.find('.ant-input-clear-icon').at(0).simulate('click');
     expect(onSearch).toHaveBeenLastCalledWith('', expect.anything());
     expect(onChange).toHaveBeenCalled();
   });
@@ -186,5 +183,37 @@ describe('Input.Search', () => {
   it('should support invalid addonAfter', () => {
     const wrapper = mount(<Search addonAfter={[]} enterButton />);
     expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  it('should prevent search button mousedown event', () => {
+    const ref = React.createRef();
+    const wrapper = mount(<Search ref={ref} enterButton="button text" />, {
+      attachTo: document.body,
+    });
+    let prevented = false;
+    ref.current.focus();
+    expect(document.activeElement).toBe(wrapper.find('input').at(0).getDOMNode());
+    wrapper.find('button').simulate('mousedown', {
+      preventDefault: () => {
+        prevented = true;
+      },
+    });
+    expect(prevented).toBeTruthy();
+    expect(document.activeElement).toBe(wrapper.find('input').at(0).getDOMNode());
+  });
+
+  it('not crash when use function ref', () => {
+    const ref = jest.fn();
+    const wrapper = mount(<Search ref={ref} enterButton />);
+    expect(() => {
+      wrapper.find('button').simulate('mousedown');
+    }).not.toThrow();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/27258
+  it('Search with allowClear should have one className only', () => {
+    const wrapper = mount(<Search allowClear className="className" />);
+    expect(wrapper.find('.ant-input-group-wrapper').hasClass('className')).toBe(true);
+    expect(wrapper.find('.ant-input-affix-wrapper').hasClass('className')).toBe(false);
   });
 });

@@ -18,39 +18,40 @@ const SourceImages = {
 
 const MORE_LIST: MoreProps[] = [
   {
-    title: 'Ant Design 4.0：创造快乐工作',
-    description: '本篇文章将和大家一起聊聊 Ant Design 4.0，以及穿插一些 4.0 背后的故事。',
-    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*yQqmQ514NNIAAAAAAAAAAABkARQnAQ',
-    date: '2020-01-16',
+    title: '智能组件探索：这个工具栏会自动布局',
+    description:
+      '工程师只需要选择「我要展示哪些元素、每个元素有多少」，而「这些元素怎么摆」、「间距是多少」等细节问题都会根据规则自动生成。',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*A_F0SL5shbEAAAAAAAAAAAAAARQnAQ',
+    date: '2020-08-19',
     source: 'zhihu',
-    href: 'https://zhuanlan.zhihu.com/p/103016912',
+    href: 'https://zhuanlan.zhihu.com/p/188693322',
+  },
+  {
+    title: '一个好用的智能栅格工具是如何诞生的？',
+    description:
+      '和大家分享一下整个智能栅格的设计开发过程，并从中感受到设计的「穿透力」，聊聊如何打破界限、从表面到内核、从表象到本质。',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*hk19TqWVSDsAAAAAAAAAAAAAARQnAQ',
+    date: '2020-08-09',
+    source: 'zhihu',
+    href: 'https://zhuanlan.zhihu.com/p/176534657',
   },
   {
     title: '设计体系的响应式设计',
     description:
-      'Ant Design 在很多组件中提供了响应式设计，但拥有更加完备的环境适应性应该是设计体系长期的目标之一。',
-    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*C6uMRqtw90AAAAAAAAAAAABkARQnAQ',
-    date: '2020-02-29',
+      '在蚂蚁内部有着数量繁多且复杂的中后台业务系统，Ant Design 一直以来致力于从设计策略和资产的角度解决这些产品的体验一致性问题。',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*zk6CQphLepQAAAAAAAAAAAAAARQnAQ',
+    date: '2020-03-24',
     source: 'zhihu',
     href: 'https://zhuanlan.zhihu.com/p/109781992',
   },
   {
-    title: '“表里不一”的设计资产',
+    title: '我的按钮究竟该放哪儿！？',
     description:
-      '随着企业级产品复杂业务场景的增加，Ant Design 的列表覆盖度也受到了很大的挑战，因此我们决定一探究竟。',
-    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*z-BPSqBKK_cAAAAAAAAAAABkARQnAQ',
-    date: '2020-03-01',
+      '按钮是一种使用广泛的基础界面元素，正因其使用的普遍性和重要性，我们需要并一直在探索建立按钮设计规范。',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*d595RpGKQ_IAAAAAAAAAAAAAARQnAQ',
+    date: '2020-02-29',
     source: 'zhihu',
-    href: 'https://zhuanlan.zhihu.com/p/110071209',
-  },
-  {
-    title: '整齐划一？不如错落有致',
-    description:
-      '今天我们从中来讨论一个更被大家忽视但实则举重若轻的问题——「我们应怎样去考虑表单的宽度」',
-    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*1HQFQKoRUCQAAAAAAAAAAABkARQnAQ',
-    date: '2020-03-01',
-    source: 'zhihu',
-    href: 'https://zhuanlan.zhihu.com/p/110096160',
+    href: 'https://zhuanlan.zhihu.com/p/109644406',
   },
 ];
 

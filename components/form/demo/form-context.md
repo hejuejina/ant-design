@@ -88,7 +88,7 @@ const Demo = () => {
   };
 
   return (
-    <div>
+    <>
       <Form.Provider
         onFormFinish={(name, { values, forms }) => {
           if (name === 'userForm') {
@@ -129,7 +129,7 @@ const Demo = () => {
             <Button htmlType="submit" type="primary">
               Submit
             </Button>
-            <Button htmlType="button" style={{ marginLeft: 8 }} onClick={showUserModal}>
+            <Button htmlType="button" style={{ margin: '0 8px' }} onClick={showUserModal}>
               Add User
             </Button>
           </Form.Item>
@@ -137,7 +137,7 @@ const Demo = () => {
 
         <ModalForm visible={visible} onCancel={hideUserModal} />
       </Form.Provider>
-    </div>
+    </>
   );
 };
 
@@ -151,5 +151,10 @@ ReactDOM.render(<Demo />, mountNode);
 
 #components-form-demo-form-context .user .ant-avatar {
   margin-right: 8px;
+}
+
+.ant-row-rtl #components-form-demo-form-context .user .ant-avatar {
+  margin-right: 0;
+  margin-left: 8px;
 }
 ```

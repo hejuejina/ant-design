@@ -20,7 +20,7 @@ const dimensionMaxMap = {
 
 export interface SiderContextProps {
   siderCollapsed?: boolean;
-  collapsedWidth?: string | number;
+  collapsedWidth?: number | string;
 }
 
 export const SiderContext: React.Context<SiderContextProps> = React.createContext({});
@@ -50,7 +50,6 @@ type InternalSideProps = SiderProps & LayoutContextProps;
 export interface SiderState {
   collapsed?: boolean;
   below: boolean;
-  belowShow?: boolean;
 }
 
 const generateId = (() => {
@@ -109,32 +108,34 @@ class InternalSider extends React.Component<InternalSideProps, SiderState> {
 
   componentDidMount() {
     if (this.mql) {
-      this.mql.addListener(this.responsiveHandler);
+      try {
+        this.mql.addEventListener('change', this.responsiveHandler);
+      } catch (error) {
+        this.mql.addListener(this.responsiveHandler);
+      }
       this.responsiveHandler(this.mql);
     }
 
-    if (this.props.siderHook) {
-      this.props.siderHook.addSider(this.uniqueId);
-    }
+    this.props?.siderHook.addSider(this.uniqueId);
   }
 
   componentWillUnmount() {
-    if (this.mql) {
-      this.mql.removeListener(this.responsiveHandler as any);
+    try {
+      this.mql?.removeEventListener('change', this.responsiveHandler);
+    } catch (error) {
+      this.mql?.removeListener(this.responsiveHandler);
     }
-
-    if (this.props.siderHook) {
-      this.props.siderHook.removeSider(this.uniqueId);
-    }
+    this.props?.siderHook.removeSider(this.uniqueId);
   }
 
   responsiveHandler = (mql: MediaQueryListEvent | MediaQueryList) => {
     this.setState({ below: mql.matches });
     const { onBreakpoint } = this.props;
+    const { collapsed } = this.state;
     if (onBreakpoint) {
       onBreakpoint(mql.matches);
     }
-    if (this.state.collapsed !== mql.matches) {
+    if (collapsed !== mql.matches) {
       this.setCollapsed(mql.matches, 'responsive');
     }
   };
@@ -156,10 +157,6 @@ class InternalSider extends React.Component<InternalSideProps, SiderState> {
     this.setCollapsed(collapsed, 'clickTrigger');
   };
 
-  belowShowChange = () => {
-    this.setState(({ belowShow }) => ({ belowShow: !belowShow }));
-  };
-
   renderSider = ({ getPrefixCls }: ConfigConsumerProps) => {
     const {
       prefixCls: customizePrefixCls,
@@ -172,8 +169,10 @@ class InternalSider extends React.Component<InternalSideProps, SiderState> {
       width,
       collapsedWidth,
       zeroWidthTriggerStyle,
+      children,
       ...others
     } = this.props;
+    const { collapsed, below } = this.state;
     const prefixCls = getPrefixCls('layout-sider', customizePrefixCls);
     const divProps = omit(others, [
       'collapsed',
@@ -184,7 +183,7 @@ class InternalSider extends React.Component<InternalSideProps, SiderState> {
       'siderHook',
       'zeroWidthTriggerStyle',
     ]);
-    const rawWidth = this.state.collapsed ? collapsedWidth : width;
+    const rawWidth = collapsed ? collapsedWidth : width;
     // use "px" as fallback unit for width
     const siderWidth = isNumeric(rawWidth) ? `${rawWidth}px` : String(rawWidth);
     // special trigger when collapsedWidth == 0
@@ -192,19 +191,20 @@ class InternalSider extends React.Component<InternalSideProps, SiderState> {
       parseFloat(String(collapsedWidth || 0)) === 0 ? (
         <span
           onClick={this.toggle}
-          className={`${prefixCls}-zero-width-trigger ${prefixCls}-zero-width-trigger-${
-            reverseArrow ? 'right' : 'left'
-          }`}
+          className={classNames(
+            `${prefixCls}-zero-width-trigger`,
+            `${prefixCls}-zero-width-trigger-${reverseArrow ? 'right' : 'left'}`,
+          )}
           style={zeroWidthTriggerStyle}
         >
-          <BarsOutlined />
+          {trigger || <BarsOutlined />}
         </span>
       ) : null;
     const iconObj = {
       expanded: reverseArrow ? <RightOutlined /> : <LeftOutlined />,
       collapsed: reverseArrow ? <LeftOutlined /> : <RightOutlined />,
     };
-    const status = this.state.collapsed ? 'collapsed' : 'expanded';
+    const status = collapsed ? 'collapsed' : 'expanded';
     const defaultTrigger = iconObj[status];
     const triggerDom =
       trigger !== null
@@ -225,16 +225,21 @@ class InternalSider extends React.Component<InternalSideProps, SiderState> {
       minWidth: siderWidth, // https://github.com/ant-design/ant-design/issues/6349
       width: siderWidth,
     };
-    const siderCls = classNames(className, prefixCls, `${prefixCls}-${theme}`, {
-      [`${prefixCls}-collapsed`]: !!this.state.collapsed,
-      [`${prefixCls}-has-trigger`]: collapsible && trigger !== null && !zeroWidthTrigger,
-      [`${prefixCls}-below`]: !!this.state.below,
-      [`${prefixCls}-zero-width`]: parseFloat(siderWidth) === 0,
-    });
+    const siderCls = classNames(
+      prefixCls,
+      `${prefixCls}-${theme}`,
+      {
+        [`${prefixCls}-collapsed`]: !!collapsed,
+        [`${prefixCls}-has-trigger`]: collapsible && trigger !== null && !zeroWidthTrigger,
+        [`${prefixCls}-below`]: !!below,
+        [`${prefixCls}-zero-width`]: parseFloat(siderWidth) === 0,
+      },
+      className,
+    );
     return (
       <aside className={siderCls} {...divProps} style={divStyle}>
-        <div className={`${prefixCls}-children`}>{this.props.children}</div>
-        {collapsible || (this.state.below && zeroWidthTrigger) ? triggerDom : null}
+        <div className={`${prefixCls}-children`}>{children}</div>
+        {collapsible || (below && zeroWidthTrigger) ? triggerDom : null}
       </aside>
     );
   };

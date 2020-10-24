@@ -5,22 +5,49 @@ import Group from './Group';
 import Search from './Search';
 import TextArea from './TextArea';
 import Password from './Password';
-import { Omit } from '../_util/type';
+import { Omit, LiteralUnion } from '../_util/type';
 import ClearableLabeledInput, { hasPrefixSuffix } from './ClearableLabeledInput';
 import { ConfigConsumer, ConfigConsumerProps } from '../config-provider';
 import SizeContext, { SizeType } from '../config-provider/SizeContext';
-import warning from '../_util/warning';
+import devWarning from '../_util/devWarning';
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix' | 'type'> {
   prefixCls?: string;
   size?: SizeType;
+  // ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#%3Cinput%3E_types
+  type?: LiteralUnion<
+    | 'button'
+    | 'checkbox'
+    | 'color'
+    | 'date'
+    | 'datetime-local'
+    | 'email'
+    | 'file'
+    | 'hidden'
+    | 'image'
+    | 'month'
+    | 'number'
+    | 'password'
+    | 'radio'
+    | 'range'
+    | 'reset'
+    | 'search'
+    | 'submit'
+    | 'tel'
+    | 'text'
+    | 'time'
+    | 'url'
+    | 'week',
+    string
+  >;
   onPressEnter?: React.KeyboardEventHandler<HTMLInputElement>;
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   allowClear?: boolean;
+  bordered?: boolean;
 }
 
 export function fixControlledValue<T>(value: T) {
@@ -58,6 +85,7 @@ export function resolveOnChange(
 
 export function getInputClassName(
   prefixCls: string,
+  bordered: boolean,
   size?: SizeType,
   disabled?: boolean,
   direction?: any,
@@ -67,6 +95,7 @@ export function getInputClassName(
     [`${prefixCls}-lg`]: size === 'large',
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-rtl`]: direction === 'rtl',
+    [`${prefixCls}-borderless`]: !bordered,
   });
 }
 
@@ -127,7 +156,7 @@ class Input extends React.Component<InputProps, InputState> {
 
   getSnapshotBeforeUpdate(prevProps: InputProps) {
     if (hasPrefixSuffix(prevProps) !== hasPrefixSuffix(this.props)) {
-      warning(
+      devWarning(
         this.input !== document.activeElement,
         'Input',
         `When Input is focused, dynamic add or remove prefix / suffix will make it lose focus caused by dom structure change. Read more: https://ant.design/components/input/#FAQ`,
@@ -164,7 +193,7 @@ class Input extends React.Component<InputProps, InputState> {
 
   onFocus: React.FocusEventHandler<HTMLInputElement> = e => {
     const { onFocus } = this.props;
-    this.setState({ focused: true });
+    this.setState({ focused: true }, this.clearPasswordValueAttribute);
     if (onFocus) {
       onFocus(e);
     }
@@ -172,7 +201,7 @@ class Input extends React.Component<InputProps, InputState> {
 
   onBlur: React.FocusEventHandler<HTMLInputElement> = e => {
     const { onBlur } = this.props;
-    this.setState({ focused: false });
+    this.setState({ focused: false }, this.clearPasswordValueAttribute);
     if (onBlur) {
       onBlur(e);
     }
@@ -181,6 +210,8 @@ class Input extends React.Component<InputProps, InputState> {
   setValue(value: string, callback?: () => void) {
     if (this.props.value === undefined) {
       this.setState({ value }, callback);
+    } else {
+      callback?.();
     }
   }
 
@@ -191,7 +222,12 @@ class Input extends React.Component<InputProps, InputState> {
     resolveOnChange(this.input, e, this.props.onChange);
   };
 
-  renderInput = (prefixCls: string, size?: SizeType) => {
+  renderInput = (
+    prefixCls: string,
+    size: SizeType | undefined,
+    bordered: boolean,
+    input: ConfigConsumerProps['input'] = {},
+  ) => {
     const { className, addonBefore, addonAfter, size: customizeSize, disabled } = this.props;
     // Fix https://fb.me/react-unknown-prop
     const otherProps = omit(this.props, [
@@ -207,16 +243,18 @@ class Input extends React.Component<InputProps, InputState> {
       'defaultValue',
       'size',
       'inputType',
+      'bordered',
     ]);
     return (
       <input
+        autoComplete={input.autoComplete}
         {...otherProps}
         onChange={this.handleChange}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onKeyDown={this.handleKeyDown}
         className={classNames(
-          getInputClassName(prefixCls, customizeSize || size, disabled, this.direction),
+          getInputClassName(prefixCls, bordered, customizeSize || size, disabled, this.direction),
           {
             [className!]: className && !addonBefore && !addonAfter,
           },
@@ -254,11 +292,12 @@ class Input extends React.Component<InputProps, InputState> {
     }
   };
 
-  renderComponent = ({ getPrefixCls, direction }: ConfigConsumerProps) => {
+  renderComponent = ({ getPrefixCls, direction, input }: ConfigConsumerProps) => {
     const { value, focused } = this.state;
-    const { prefixCls: customizePrefixCls } = this.props;
+    const { prefixCls: customizePrefixCls, bordered = true } = this.props;
     const prefixCls = getPrefixCls('input', customizePrefixCls);
     this.direction = direction;
+
     return (
       <SizeContext.Consumer>
         {size => (
@@ -268,12 +307,13 @@ class Input extends React.Component<InputProps, InputState> {
             prefixCls={prefixCls}
             inputType="input"
             value={fixControlledValue(value)}
-            element={this.renderInput(prefixCls, size)}
+            element={this.renderInput(prefixCls, size, bordered, input)}
             handleReset={this.handleReset}
             ref={this.saveClearableInput}
             direction={direction}
             focused={focused}
             triggerFocus={this.focus}
+            bordered={bordered}
           />
         )}
       </SizeContext.Consumer>

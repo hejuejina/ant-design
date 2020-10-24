@@ -28,11 +28,14 @@ exports[`Calendar Calendar should support locale 1`] = `
             readonly=""
             role="combobox"
             style="opacity: 0;"
+            type="search"
+            unselectable="on"
             value=""
           />
         </span>
         <span
           class="ant-select-selection-item"
+          title="2018年"
         >
           2018年
         </span>
@@ -45,7 +48,7 @@ exports[`Calendar Calendar should support locale 1`] = `
       >
         <span
           aria-label="down"
-          class="anticon anticon-down"
+          class="anticon anticon-down ant-select-suffix"
           role="img"
         >
           <svg
@@ -86,11 +89,14 @@ exports[`Calendar Calendar should support locale 1`] = `
             readonly=""
             role="combobox"
             style="opacity: 0;"
+            type="search"
+            unselectable="on"
             value=""
           />
         </span>
         <span
           class="ant-select-selection-item"
+          title="10月"
         >
           10月
         </span>
@@ -103,7 +109,7 @@ exports[`Calendar Calendar should support locale 1`] = `
       >
         <span
           aria-label="down"
-          class="anticon anticon-down"
+          class="anticon anticon-down ant-select-suffix"
           role="img"
         >
           <svg
@@ -208,23 +214,6 @@ exports[`Calendar Calendar should support locale 1`] = `
           <tbody>
             <tr>
               <td
-                class="ant-picker-cell"
-                title="2018-09-30"
-              >
-                <div
-                  class="ant-picker-cell-inner ant-picker-calendar-date"
-                >
-                  <div
-                    class="ant-picker-calendar-date-value"
-                  >
-                    30
-                  </div>
-                  <div
-                    class="ant-picker-calendar-date-content"
-                  />
-                </div>
-              </td>
-              <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-01"
               >
@@ -326,8 +315,6 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
-            </tr>
-            <tr>
               <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-07"
@@ -345,6 +332,8 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
+            </tr>
+            <tr>
               <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-08"
@@ -447,8 +436,6 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
-            </tr>
-            <tr>
               <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-14"
@@ -466,6 +453,8 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
+            </tr>
+            <tr>
               <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-15"
@@ -568,8 +557,6 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
-            </tr>
-            <tr>
               <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-21"
@@ -587,6 +574,8 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
+            </tr>
+            <tr>
               <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-22"
@@ -689,8 +678,6 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
-            </tr>
-            <tr>
               <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-28"
@@ -708,6 +695,8 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
+            </tr>
+            <tr>
               <td
                 class="ant-picker-cell ant-picker-cell-in-view"
                 title="2018-10-29"
@@ -810,8 +799,6 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
-            </tr>
-            <tr>
               <td
                 class="ant-picker-cell"
                 title="2018-11-04"
@@ -829,6 +816,8 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
+            </tr>
+            <tr>
               <td
                 class="ant-picker-cell"
                 title="2018-11-05"
@@ -931,6 +920,23 @@ exports[`Calendar Calendar should support locale 1`] = `
                   />
                 </div>
               </td>
+              <td
+                class="ant-picker-cell"
+                title="2018-11-11"
+              >
+                <div
+                  class="ant-picker-cell-inner ant-picker-calendar-date"
+                >
+                  <div
+                    class="ant-picker-calendar-date-value"
+                  >
+                    11
+                  </div>
+                  <div
+                    class="ant-picker-calendar-date-content"
+                  />
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -942,13 +948,13 @@ exports[`Calendar Calendar should support locale 1`] = `
 
 exports[`Calendar rtl render component should be rendered correctly in RTL direction 1`] = `
 <div
-  class="ant-picker-calendar ant-picker-calendar-full"
+  class="ant-picker-calendar ant-picker-calendar-full ant-picker-calendar-rtl"
 >
   <div
     class="ant-picker-calendar-header"
   >
     <div
-      class="ant-select ant-picker-calendar-year-select ant-select-rtl ant-select-single ant-select-show-arrow"
+      class="ant-select ant-select-rtl ant-picker-calendar-year-select ant-select-single ant-select-show-arrow"
     >
       <div
         class="ant-select-selector"
@@ -967,11 +973,14 @@ exports[`Calendar rtl render component should be rendered correctly in RTL direc
             readonly=""
             role="combobox"
             style="opacity:0"
+            type="search"
+            unselectable="on"
             value=""
           />
         </span>
         <span
           class="ant-select-selection-item"
+          title="2000"
         >
           2000
         </span>
@@ -984,7 +993,7 @@ exports[`Calendar rtl render component should be rendered correctly in RTL direc
       >
         <span
           aria-label="down"
-          class="anticon anticon-down"
+          class="anticon anticon-down ant-select-suffix"
           role="img"
         >
           <svg
@@ -1005,7 +1014,7 @@ exports[`Calendar rtl render component should be rendered correctly in RTL direc
       </span>
     </div>
     <div
-      class="ant-select ant-picker-calendar-month-select ant-select-rtl ant-select-single ant-select-show-arrow"
+      class="ant-select ant-select-rtl ant-picker-calendar-month-select ant-select-single ant-select-show-arrow"
     >
       <div
         class="ant-select-selector"
@@ -1024,11 +1033,14 @@ exports[`Calendar rtl render component should be rendered correctly in RTL direc
             readonly=""
             role="combobox"
             style="opacity:0"
+            type="search"
+            unselectable="on"
             value=""
           />
         </span>
         <span
           class="ant-select-selection-item"
+          title="Sep"
         >
           Sep
         </span>
@@ -1041,7 +1053,7 @@ exports[`Calendar rtl render component should be rendered correctly in RTL direc
       >
         <span
           aria-label="down"
-          class="anticon anticon-down"
+          class="anticon anticon-down ant-select-suffix"
           role="img"
         >
           <svg

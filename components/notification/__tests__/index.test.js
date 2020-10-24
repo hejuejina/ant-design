@@ -1,17 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import notification from '..';
+import { UserOutlined } from '@ant-design/icons';
+import notification, { getInstance } from '..';
 
 describe('notification', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     jest.useFakeTimers();
   });
 
-  afterAll(() => {
-    jest.useRealTimers();
-  });
-
   afterEach(() => {
+    jest.useRealTimers();
     notification.destroy();
   });
 
@@ -53,14 +51,18 @@ describe('notification', () => {
 
     await Promise.resolve();
     expect(document.querySelectorAll('.ant-notification-notice').length).toBe(2);
+
     notification.close('1');
-    await Promise.resolve();
     jest.runAllTimers();
-    expect(document.querySelectorAll('.ant-notification-notice').length).toBe(1);
+    expect((await getInstance('ant-notification-topRight')).component.state.notices).toHaveLength(
+      1,
+    );
+
     notification.close('2');
-    await Promise.resolve();
     jest.runAllTimers();
-    expect(document.querySelectorAll('.ant-notification-notice').length).toBe(0);
+    expect((await getInstance('ant-notification-topRight')).component.state.notices).toHaveLength(
+      0,
+    );
   });
 
   it('should be able to destroy globally', async () => {
@@ -86,6 +88,31 @@ describe('notification', () => {
       bottom: 100,
     });
     notification.destroy();
+  });
+
+  it('should be able to config rtl', () => {
+    notification.config({
+      rtl: true,
+    });
+    notification.open({
+      message: 'whatever',
+    });
+    expect(document.querySelectorAll('.ant-notification-rtl').length).toBe(1);
+  });
+
+  it('should be able to config prefixCls', () => {
+    notification.config({
+      prefixCls: 'prefix-test',
+    });
+    notification.open({
+      message: 'Notification Title',
+      duration: 0,
+    });
+    expect(document.querySelectorAll('.ant-notification-notice').length).toBe(0);
+    expect(document.querySelectorAll('.prefix-test-notice').length).toBe(1);
+    notification.config({
+      prefixCls: 'ant-notification',
+    });
   });
 
   it('should be able to open with icon', async () => {
@@ -134,5 +161,24 @@ describe('notification', () => {
       closeIcon: <span className="test-customize-icon" />,
     });
     expect(document.querySelectorAll('.test-customize-icon').length).toBe(1);
+  });
+
+  it('support config duration', () => {
+    notification.config({
+      duration: 0,
+    });
+    notification.open({
+      message: 'whatever',
+    });
+    expect(document.querySelectorAll('.ant-notification').length).toBe(1);
+  });
+
+  it('support icon', () => {
+    notification.open({
+      message: 'Notification Title',
+      duration: 0,
+      icon: <UserOutlined />,
+    });
+    expect(document.querySelectorAll('.anticon-user').length).toBe(1);
   });
 });

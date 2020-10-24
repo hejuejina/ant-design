@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Tooltip, { TooltipProps } from '../tooltip';
+import useCombinedRefs from '../_util/hooks/useCombinedRefs';
 
-export default function SliderTooltip(props: TooltipProps) {
+const SliderTooltip = React.forwardRef<unknown, TooltipProps>((props, ref) => {
   const { visible } = props;
-  const tooltipRef = React.useRef<Tooltip>(null);
+  const innerRef = React.useRef<any>(null);
+  const tooltipRef = useCombinedRefs(ref, innerRef);
 
   const rafRef = React.useRef<number | null>(null);
 
@@ -13,15 +15,8 @@ export default function SliderTooltip(props: TooltipProps) {
   }
 
   function keepAlign() {
-    if (rafRef.current !== null) {
-      return;
-    }
-
     rafRef.current = window.requestAnimationFrame(() => {
-      if (tooltipRef.current && (tooltipRef.current as any).tooltip) {
-        (tooltipRef.current as any).tooltip.forcePopupAlign();
-      }
-
+      (tooltipRef.current as any).forcePopupAlign();
       rafRef.current = null;
       keepAlign();
     });
@@ -38,4 +33,6 @@ export default function SliderTooltip(props: TooltipProps) {
   }, [visible]);
 
   return <Tooltip ref={tooltipRef} {...props} />;
-}
+});
+
+export default SliderTooltip;

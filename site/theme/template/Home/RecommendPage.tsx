@@ -16,51 +16,49 @@ interface Recommend {
 
 const LIST_CN: Recommend[] = [
   {
-    title: 'Ant Design 4.0 正式版来了！',
-    description:
-      'Ant Design 4.0 正式版于 2 月 28 日提前发布！设计资产不断丰富，设计工具层出不穷，为百万设计者和开发者创造快乐工作。',
-    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*G0nDS5-aESoAAAAAAAAAAABkARQnAQ',
-    href: 'https://zhuanlan.zhihu.com/p/109633620',
+    title: '树形控件在生产力工具中的设计',
+    description: '惊！半年实践血泪史，3000 字深度好文，一个爱树的设计师手把手教你如何设计「树 」！',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*Z4eXS55fMigAAAAAAAAAAAAAARQnAQ',
+    href: 'https://zhuanlan.zhihu.com/p/260068653',
     popularize: true,
   },
   {
-    title: '图表库 G2Plot 1.0 发布了！',
-    description:
-      '开箱即用图表库 G2Plot 1.0 发布，支持 40+ 图表类型，高级统计分析组件和复杂交互内置。',
-    img: 'https://gw.alipayobjects.com/mdn/rms_d314dd/afts/img/A*Wv4XTIoIJ3gAAAAAAAAAAABkARQnAQ',
-    href: 'https://zhuanlan.zhihu.com/p/113888415',
+    title: '或许这就是下一代组件库',
+    description: '随着 React hooks、Vue composition API 的推出，或许组件库有了新的突破点。',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*SU6hQ5jHVEsAAAAAAAAAAAAAARQnAQ',
+    href: 'https://zhuanlan.zhihu.com/p/252824872',
   },
   {
-    title: 'HiTu·让人人都是插画师',
-    description: '图形化设计资产「海兔」帮助大家解决通用层面的需求，把设计师从重复劳动中解放出来。',
-    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*sybfTLM-CA8AAAAAAAAAAABkARQnAQ',
-    href: 'https://ant.design/docs/spec/illustration-cn',
+    title: 'Ant Design 4.0 的一些杂事儿 - VirtualList 篇',
+    description:
+      '在 React 中，我们常说不太需要关注性能问题。然而作为组件库，这些事你就不得不考虑一下。',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*ULOBQroFRMQAAAAAAAAAAAAAARQnAQ',
+    href: 'https://zhuanlan.zhihu.com/p/237996796',
   },
 ];
 
 const LIST_EN: Recommend[] = [
   {
-    title: 'Ant Design 4.0 is out!',
+    title: 'How to Design Tree Component',
     description:
-      '⚡️ Smaller, faster, prettier and more powerfull, finally Ant Design 4.0 right here.',
-    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*G0nDS5-aESoAAAAAAAAAAABkARQnAQ',
-    href: 'https://github.com/ant-design/ant-design/issues/21656',
+      '🌲 Surprise! With half-a-year practice of blood and tears, here comes a designer who deeply loves trees to teach you how to design 「tree」component!',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*Z4eXS55fMigAAAAAAAAAAAAAARQnAQ',
+    href: 'https://zhuanlan.zhihu.com/p/260068653',
     popularize: true,
   },
   {
-    title: 'Introduce AntV',
-    description: '✨ New player of front-end data visualization',
-    img:
-      'https://gw.alipayobjects.com/zos/antfincdn/Vb5TpaLRSn/089e332b-a54c-421e-a4f0-f2a3480e2f42.png',
-    href:
-      'https://medium.com/ant-design/introduce-antv-a-new-player-in-data-visualization-90ca999cfb08',
+    title: 'Next Generation of Component Library?',
+    description:
+      '😎 With the launch of React hooks and Vue composition API, perhaps we have met a new breakthrough point of component libraries.',
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*SU6hQ5jHVEsAAAAAAAAAAAAAARQnAQ',
+    href: 'https://zhuanlan.zhihu.com/p/252824872',
   },
   {
-    title: 'G2Plot: a charting library',
-    description: '📊 A charting library based on the grammar of graphics',
-    img:
-      'https://gw.alipayobjects.com/zos/antfincdn/NBwf%24mYoDf/d100a715-d763-4bc5-b801-23b7f56b665d.png',
-    href: 'https://github.com/antvis/G2Plot',
+    title: 'Stories about Ant Design 4.0: VirtualList',
+    description:
+      "🏃 In React, usually you don't need to focus on performance problems. However, as a component library, we have to think about it.",
+    img: 'https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*ULOBQroFRMQAAAAAAAAAAAAAARQnAQ',
+    href: 'https://zhuanlan.zhihu.com/p/237996796',
   },
 ];
 
@@ -101,7 +99,7 @@ const RecommendBlock = ({
       )}
       <div className="recommend-content">
         <Title level={4}>{title}</Title>
-        <Paragraph>{description}</Paragraph>
+        <Paragraph style={{ fontSize: 13 }}>{description}</Paragraph>
       </div>
     </a>
   );

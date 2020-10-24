@@ -1,25 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import mountTest from '../../../tests/shared/mountTest';
-import rtlTest from '../../../tests/shared/rtlTest';
 import { sleep } from '../../../tests/utils';
 
 describe('Collapse', () => {
-  // Fix css-animation deps on these
-  // https://github.com/yiminghe/css-animation/blob/a5986d73fd7dfce75665337f39b91483d63a4c8c/src/Event.js#L44
-  window.AnimationEvent = window.AnimationEvent || (() => {});
-  window.TransitionEvent = window.TransitionEvent || (() => {});
-
-  afterAll(() => {
-    // restore it
-    delete window.AnimationEvent;
-    delete window.TransitionEvent;
-  });
-
   // eslint-disable-next-line global-require
   const Collapse = require('..').default;
-  mountTest(Collapse);
-  rtlTest(Collapse);
 
   it('should support remove expandIcon', () => {
     const wrapper = mount(
@@ -65,11 +50,10 @@ describe('Collapse', () => {
       </Collapse>,
     );
     expect(wrapper.find('.ant-collapse-item').hasClass('ant-collapse-item-active')).toBe(false);
-    wrapper
-      .find('.ant-collapse-header')
-      .at(0)
-      .simulate('click');
+    wrapper.find('.ant-collapse-header').at(0).simulate('click');
+    wrapper.update();
     await sleep(400);
+    wrapper.update();
     expect(wrapper.find('.ant-collapse-item').hasClass('ant-collapse-item-active')).toBe(true);
   });
 
@@ -81,10 +65,7 @@ describe('Collapse', () => {
         </Collapse.Panel>
       </Collapse>,
     );
-    wrapper
-      .find('.ant-collapse-header')
-      .at(0)
-      .simulate('click');
+    wrapper.find('.ant-collapse-header').at(0).simulate('click');
     expect(wrapper.render()).toMatchSnapshot();
   });
 });

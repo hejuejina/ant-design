@@ -1,8 +1,11 @@
 import * as React from 'react';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import toArray from 'rc-util/lib/Children/toArray';
-import { ConfigConsumerProps, ConfigContext } from '../config-provider';
+import { ConfigContext } from '../config-provider';
 import { SizeType } from '../config-provider/SizeContext';
+import Item from './Item';
+
+export const LastIndexContext = React.createContext(0);
 
 export interface SpaceProps {
   prefixCls?: string;
@@ -10,56 +13,74 @@ export interface SpaceProps {
   style?: React.CSSProperties;
   size?: SizeType | number;
   direction?: 'horizontal' | 'vertical';
+  // No `stretch` since many components do not support that.
+  align?: 'start' | 'end' | 'center' | 'baseline';
+  split?: React.ReactNode;
 }
 
-const spaceSize = {
-  small: 8,
-  middle: 16,
-  large: 24,
-};
-
 const Space: React.FC<SpaceProps> = props => {
-  const { getPrefixCls, space }: ConfigConsumerProps = React.useContext(ConfigContext);
+  const { getPrefixCls, space, direction: directionConfig } = React.useContext(ConfigContext);
 
   const {
     size = space?.size || 'small',
+    align,
     className,
     children,
     direction = 'horizontal',
     prefixCls: customizePrefixCls,
+    split,
     ...otherProps
   } = props;
 
-  const items = toArray(children);
-  const len = items.length;
+  const childNodes = toArray(children, { keepEmpty: true });
 
-  if (len === 0) {
+  if (childNodes.length === 0) {
     return null;
   }
 
+  const mergedAlign = align === undefined && direction === 'horizontal' ? 'center' : align;
   const prefixCls = getPrefixCls('space', customizePrefixCls);
-  const cn = classnames(prefixCls, `${prefixCls}-${direction}`, className);
+  const cn = classNames(
+    prefixCls,
+    `${prefixCls}-${direction}`,
+    {
+      [`${prefixCls}-rtl`]: directionConfig === 'rtl',
+      [`${prefixCls}-align-${mergedAlign}`]: mergedAlign,
+    },
+    className,
+  );
 
   const itemClassName = `${prefixCls}-item`;
 
+  const marginDirection = directionConfig === 'rtl' ? 'marginLeft' : 'marginRight';
+
+  // Calculate latest one
+  let latestIndex = 0;
+  const nodes = childNodes.map((child, i) => {
+    if (child !== null && child !== undefined) {
+      latestIndex = i;
+    }
+
+    /* eslint-disable react/no-array-index-key */
+    return (
+      <Item
+        className={itemClassName}
+        key={`${itemClassName}-${i}`}
+        direction={direction}
+        size={size}
+        index={i}
+        marginDirection={marginDirection}
+        split={split}
+      >
+        {child}
+      </Item>
+    );
+    /* eslint-enable */
+  });
+
   return (
     <div className={cn} {...otherProps}>
-      {items.map((child, i) => (
-        <div
-          className={itemClassName}
-          key={`${itemClassName}-i`}
-          style={
-            i === len - 1
-              ? {}
-              : {
-                  [direction === 'vertical' ? 'marginBottom' : 'marginRight']:
-                    typeof size === 'string' ? spaceSize[size] : size,
-                }
-          }
-        >
-          {child}
-        </div>
-      ))}
+      <LastIndexContext.Provider value={latestIndex}>{nodes}</LastIndexContext.Provider>
     </div>
   );
 };

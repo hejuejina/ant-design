@@ -1,6 +1,6 @@
 ---
 order: 6
-iframe: 210
+iframe: 228
 title:
   zh-CN: 响应式
   en-US: responsive
@@ -62,7 +62,7 @@ const Content = ({ children, extra }) => {
 };
 
 ReactDOM.render(
-  <div>
+  <>
     <PageHeader
       className="site-page-header-responsive"
       onBack={() => window.history.back()}
@@ -84,21 +84,12 @@ ReactDOM.render(
     >
       <Content extra={extraContent}>{renderContent()}</Content>
     </PageHeader>
-  </div>,
+  </>,
   mountNode,
 );
 ```
 
-```css
-.site-page-header-responsive {
-  border: 1px solid rgb(235, 237, 240);
-}
-```
-
 <style>
-[data-theme="dark"] .site-page-header-responsive {
-  border: 1px solid #303030;
-}
 tr:last-child td {
   padding-bottom: 0;
 }

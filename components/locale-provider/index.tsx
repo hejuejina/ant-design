@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import warning from '../_util/warning';
+import { ValidateMessages } from 'rc-field-form/lib/interface';
+import devWarning from '../_util/devWarning';
 
 import { ModalLocale, changeConfirmLocale } from '../modal/locale';
 import { TransferLocale as TransferLocaleForEmpty } from '../empty';
@@ -10,6 +10,7 @@ import { PopconfirmLocale } from '../popconfirm';
 import { UploadLocale } from '../upload/interface';
 import { TransferLocale } from '../transfer';
 import { PickerLocale as DatePickerLocale } from '../date-picker/generatePicker';
+import LocaleContext from './context';
 
 export const ANT_MARK = 'internalMark';
 
@@ -30,6 +31,10 @@ export interface Locale {
   PageHeader?: Object;
   Icon?: Object;
   Text?: Object;
+  Form?: {
+    optional?: string;
+    defaultValidateMessages: ValidateMessages;
+  };
 }
 
 export interface LocaleProviderProps {
@@ -43,28 +48,15 @@ export default class LocaleProvider extends React.Component<LocaleProviderProps,
     locale: {},
   };
 
-  static childContextTypes = {
-    antLocale: PropTypes.object,
-  };
-
   constructor(props: LocaleProviderProps) {
     super(props);
     changeConfirmLocale(props.locale && props.locale.Modal);
 
-    warning(
+    devWarning(
       props._ANT_MARK__ === ANT_MARK,
       'LocaleProvider',
       '`LocaleProvider` is deprecated. Please use `locale` with `ConfigProvider` instead: http://u.ant.design/locale',
     );
-  }
-
-  getChildContext() {
-    return {
-      antLocale: {
-        ...this.props.locale,
-        exist: true,
-      },
-    };
   }
 
   componentDidUpdate(prevProps: LocaleProviderProps) {
@@ -79,6 +71,10 @@ export default class LocaleProvider extends React.Component<LocaleProviderProps,
   }
 
   render() {
-    return this.props.children;
+    const { locale, children } = this.props;
+
+    return (
+      <LocaleContext.Provider value={{ ...locale, exist: true }}>{children}</LocaleContext.Provider>
+    );
   }
 }
